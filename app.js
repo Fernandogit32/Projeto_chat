@@ -22,25 +22,27 @@ function resposta (req,res){
         res.end(data);
     });   
   
-    io.on("connection", function(socket){
-        socket.on("enviar menssagem", function(menssagem_enviada, callback){
-            menssagem_enviada ="["+ pegarDataAtual() +"]:" +menssagem_enviada;
-            io.sockets.emit("atualizar menssagem", menssagem_enviada);
-            callback();
-        });
-    });
-    function pegarDataAtual(){
-        var dataAtual = new DataCue();
-        var dia = (dataAtual.getDate()<10 ? '0' : ' ')+dataAtual.getDate;
-        var mes = ((dataAtual.getMonth()+1)<10 ? '0' : '') + (dataAtual.getMonth() + 1);
-        var ano = dataAtual.getFullYear();
-        var hora = (dataAtual.getHours()<10 ? '0' : '') + dataAtual.getHours();
-        var minuto =(dataAtual.getMinutes()<10 ? '0' : '')+dataAtual.getMinutes();
-        var segundos = (dataAtual.getSeconds()<10 ? '0' : '')+dataAtual.getSeconds();
-    }
-    var dataFormatada =  dia + "/" + mes + "/"+ano+" "+ hora+":"+minuto+":"+segundos;
-    return dataFormatada;
+    
 
 }
 
+io.on("connection", function(socket){
+    socket.on("enviar menssagem", function(mensagem_enviada, callback){
+        mensagem_enviada ="["+ pegarDataAtual() +"]:" +mensagem_enviada;
+        io.sockets.emit("atualizar mensagem", mensagem_enviada);
+        callback();
+    });
+});
+function pegarDataAtual(){
+    var dataAtual = new Date();
+    var dia = (dataAtual.getDate()<10 ? '0' : ' ')+dataAtual.getDate;
+    var mes = ((dataAtual.getMonth()+1)<10 ? '0' : '') + (dataAtual.getMonth() + 1);
+    var ano = dataAtual.getFullYear();
+    var hora = (dataAtual.getHours()<10 ? '0' : '') + dataAtual.getHours();
+    var minuto =(dataAtual.getMinutes()<10 ? '0' : '')+dataAtual.getMinutes();
+    var segundos = (dataAtual.getSeconds()<10 ? '0' : '')+dataAtual.getSeconds();
+
+    var dataFormatada =  dia + "/" + mes + "/"+ano+" "+ hora+":"+minuto+":"+segundos;
+    return dataFormatada;
+}
 
